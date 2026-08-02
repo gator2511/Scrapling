@@ -37,5 +37,5 @@ EXPOSE 8000
 # Set entrypoint to run scrapling
 ENTRYPOINT ["uv", "run", "scrapling"]
 
-# Default command (can be overridden)
-CMD ["--help"]
+# Run the authenticated Streamable HTTP MCP server by default
+CMD ["mcp", "--http", "--host", "0.0.0.0", "--port", "8000"]
