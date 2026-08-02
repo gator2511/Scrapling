@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv run playwright install-deps chromium && \
     uv run playwright install chromium && \
     uv sync --all-extras --compile-bytecode && \
-    uv run --no-sync python -c "from mcp.server.fastmcp import FastMCP" && \
+    uv run --no-sync python -c "from scrapling.core.ai import ScraplingMCPServer; ScraplingMCPServer()" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
