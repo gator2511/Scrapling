@@ -6,7 +6,7 @@ services:
     region: singapore
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    dockerCommand: mcp --http --host 0.0.0.0 --port 8000
+    dockerCommand: uv run --no-sync scrapling mcp --http --host 0.0.0.0 --port 8000
     autoDeployTrigger: commit
     envVars:
       - key: PORT
