@@ -6,7 +6,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONDONTWRITEBYTECODE=1 \
+    UV_LINK_MODE=copy
 
 WORKDIR /app
 
@@ -28,14 +29,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv run playwright install-deps chromium && \
     uv run playwright install chromium && \
     uv sync --all-extras --compile-bytecode && \
+    uv run --no-sync python -c "from mcp.server.fastmcp import FastMCP" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Expose port for MCP server HTTP transport
 EXPOSE 8000
 
-# Set entrypoint to run scrapling
-ENTRYPOINT ["uv", "run", "scrapling"]
+# Run the already-installed Scrapling package without resolving dependencies again
+ENTRYPOINT ["uv", "run", "--no-sync", "scrapling"]
 
 # Run the authenticated Streamable HTTP MCP server by default
 CMD ["mcp", "--http", "--host", "0.0.0.0", "--port", "8000"]
